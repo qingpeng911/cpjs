@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>文本对比</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript" src="cp.js"></script>
+<script>
+	function doCompare() {
+		// 1.页面展示元素定义
+		var jsonValue = document.getElementById("json").value;
+		var json = eval(jsonValue);
+		var resultDom = document.getElementById("result");
+
+		// 2.复位（初始化），清除dom元素中的子内容
+		while (resultDom.hasChildNodes()) {
+			resultDom.removeChild(resultDom.firstChild);
+		}
+		// 3.执行
+		showCompareResult(json,resultDom);
+	}
+</script>
+
+<style type="text/css">
+#result span {
+	display: inline-block;
+	line-height: 14px;
+	height: 14px;
+	margin-top: 4px;
+	padding-top: 4px;
+	margin-bottom: 4px;
+	padding-bottom: 4px;
+	border-radius: 4px;
+}
+.v1_sub{
+    background: #ff0075;
+	text-decoration : line-through;
+}
+.v1_add{
+    background: #ff0075;
+}
+
+.v2_sub{
+    background: #75d6ff;
+	text-decoration : line-through;
+}
+.v2_add{
+    background: #75d6ff;
+}
+.v3_sub{
+    background: #f112dd;
+	text-decoration : line-through;
+}
+.v3_add{
+    background: #f112dd;
+}
+.v4_sub{
+    background: #ff8800;
+	text-decoration : line-through;
+}
+.v4_add{
+    background: #ff8800;
+}
+</style>
+</head>
+<body>
+	<div>
+		<p>输入的JSON数据</p>
+		<textarea id="json" style="width:80%;height:200px;">
+			[{
+				CrUser : "songjian",
+				CrTime : "2015-11-23 00:00:00",
+				DocContent : "妄议大管住言行，做方针不是小治上明白人节"
+			},{
+				CrUser : "caohui",
+				CrTime : "2015-11-23 00:00:00",
+				DocContent : "妄de议大政方针不是小节22"
+			},{
+				CrUser : "zaoritian",
+				CrTime : "2015-11-23 00:00:00",
+				DocContent : "妄de议大政方针不是小节22~~~"
+			}];
+		</textarea>
+	</div>
+	<button onclick="doCompare();">查看大花脸</button>
+	<div id="result" style="border:1px solid grey;width:80%;height:200px;">
+
+	</div>
+</body>
+<script type="text/javascript">
+	function ok() {
+		var jsonValue = document.getElementById("json").value;
+		var json = eval(jsonValue);
+		alert(json[0].user);
+	}
+</script>
+</html>
