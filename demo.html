@@ -21,7 +21,7 @@
 </script>
 
 <style type="text/css">
-<!--用于展示对比结果的样式-->
+<!--用于展示修改痕迹结果的样式-->
 #result span {
 	display: inline-block;
 	line-height: 14px;
@@ -65,35 +65,45 @@
 </head>
 <body>
 	<div>
-		<p>模拟传入的json格式的文本数据</p>
+		<p>模拟接口传入的json格式的多个版本的文本数据</p>
 		<textarea id="json" style="width:80%;height:200px;">
 			[{
 				CrUser : "xiaoming",
 				CrTime : "2015-11-21 00:00:00",
-				DocContent : "小说《雾霾》有个人到郑州，问我：你们北京人凭什么那么牛？我默默的深吸了一口气 ，笑着看了看他。他不服，硬要学我，也深吸了一口气。卒… 享年26岁。"
+				DocContent : "小说《雾霾》有个人到郑州，问我：你们北京人凭什么那么牛？我默默的深吸了一口气 ，笑着看了看他。他不服，硬要学我，也深吸了一口气。卒… 享年22岁。"
 			},{
 				CrUser : "xiaohua",
 				CrTime : "2015-11-22 00:00:00",
-				DocContent : "短篇小说《霾》有个人到郑州，问我：你们成都人凭什么那么牛？我默默的深吸了一口气 ，笑着看了看他。他不服，硬要学我，也深吸了一口气。卒… 享年26岁。"
+				DocContent : "短篇小说《霾》有个人到郑州，问我：你们成都人凭什么那么牛？我默默的深吸了一口气 ，笑着看了看他。他不服，硬要学我，也深吸了一口气。卒… 享年22岁。"
 			},{
 				CrUser : "admin",
 				CrTime : "2015-11-23 00:00:00",
-				DocContent : "短篇小说《霾》有个人到成都，问我：你们成都人凭什么那么牛？我默默的深吸了一口气 ，笑着看了看他。他不服，硬要学我，也深吸了一口气。卒… 享年26岁。"
+				DocContent : "短篇小说《霾》有个人到成都，问我：你们成都人凭什么那么牛？我默默的深吸了一口气 ，笑着看了看他。他不服，硬要学我，也深吸了一口气。卒… 享年22岁。"
 			}];
 		</textarea>
 	</div>
 	<button onclick="doCompare();">对比</button>
-	<br>
-	对比结果：
+	<br><br>
+	历史修改痕迹：
 	<div id="result" style="border:1px solid grey;width:80%;height:200px;">
 
 	</div>
+	<br><br>
+	注：
+	<p>
+		<span class="v1_add">新年快乐</span>：表示V1版本添加的内容
+	</p>
+	<p>
+		<span class="v2_add">万事如意</span>：表示V2版本在V1版本上添加的内容
+	</p>
+	<p>
+		<span class="v2_sub">健康长寿</span>：表示V2版本在V1版本上删除的内容
+	</p>
+	<p>
+		<span class="v3_add">大吉大利</span>：表示V3版本在V2版本上新增的内容
+	</p>
+	<p>
+		<span class="v3_sub">恭喜发财</span>：表示V3版本在V2版本上删除的内容
+	</p>
 </body>
-<script type="text/javascript">
-	function ok() {
-		var jsonValue = document.getElementById("json").value;
-		var json = eval(jsonValue);
-		alert(json[0].user);
-	}
-</script>
 </html>
