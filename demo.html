@@ -14,17 +14,10 @@
 		// 2.对比
 		var _html = Compare(_jsonData,_resultDom);
 
+		//显示修改痕迹
 		_resultDom.innerHTML = _html;
-
-		var _isRender = document.getElementById("isRender").checked;
-		var _spanNode = _resultDom.getElementsByTagName("SPAN");
-		if (_isRender) {
-			for (var i = 0; i < _spanNode.length; i++) {
-				var _version = _spanNode[i].getAttribute("version");
-				var _method = _spanNode[i].getAttribute("method");
-			}
-		}
-
+		
+		alert(_html);
 	}
 </script>
 
@@ -90,7 +83,7 @@
 			}];
 		</textarea>
 	</div>
-	<button onclick="doCompare();">对比</button>&nbsp;&nbsp;显示渲染结果：<input type="checkbox" id="isRender" checked="checked">
+	<button onclick="doCompare();">对比</button>
 	<br><br>
 	历史修改痕迹：
 	<div id="result" style="border:1px solid grey;width:80%;height:200px;">
@@ -102,19 +95,19 @@
 		<span class="v1_add">新年快乐</span>：表示V1版本添加的内容
 	</p>
 	<p>
-		<span class="v2_add">万事如意</span>：表示V2版本在V1版本上添加的内容
+		<span class="v2_add">新年快乐</span>：表示V2版本在V1版本上添加的内容
 	</p>
 	<p>
-		<span class="v2_sub">健康长寿</span>：表示V2版本在V1版本上删除的内容
+		<span class="v2_sub">新年快乐</span>：表示V2版本在V1版本上删除的内容
 	</p>
 	<p>
-		<span class="v3_add">大吉大利</span>：表示V3版本在V2版本上新增的内容
+		<span class="v3_add">新年快乐</span>：表示V3版本在V2版本上新增的内容
 	</p>
 	<p>
-		<span class="v3_sub">恭喜发财</span>：表示V3版本在V2版本上删除的内容
+		<span class="v3_sub">新年快乐</span>：表示V3版本在V2版本上删除的内容
 	</p>
 	<p>
-		<span class="v4_sub">恭喜发财</span>：表示V4版本在V3版本上删除的内容
+		<span class="v4_sub">新年快乐</span>：表示V4版本在V3版本上删除的内容
 	</p>
 </body>
 </html>
