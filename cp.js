@@ -1,3 +1,4 @@
+
 	// 比较两个子node字符数组的内容，返回含有两个元素的数组，分别记录了不同点的位置
 	function CompareChars(v_LeftCharsList, v_RightCharsList) {
 		var ResultNewList = new Array;
@@ -158,7 +159,7 @@
 	   arrTextList = getCharList(content);
 	   //给每个字符都加上一个span标签
 	   for(var i=0;i<arrTextList.length;i++){
-		   var node = createElement(arrTextList[i],json[0].Version+"_add");
+		   var node = createElement(arrTextList[i],json[0].Version,"add");
 		   resultDom.appendChild(node);
 	   }
 	   //超过两个版本，进行对比
@@ -168,6 +169,7 @@
 		       compareMulti(json[cpr_index],json[cpr_index+1],resultDom,subLen);
 		   } 
 	   }
+	   return resultDom;
    }
 
    //给json循环添加version属性
@@ -176,7 +178,7 @@
        for(var i=0;i<json.length;i++){  
             obj = json[i];
 			var n = i+1;
-			obj['Version'] = 'v'+n;
+			obj['Version'] = n;
         }
 		return json;
    }
@@ -201,7 +203,9 @@
 		v_posLists = CompareChars(arrTextList_v1, arrTextList_v2); //[[3, 3, 4, 8, 14, 18],[1, 2, 5, 5,12,13]];
 		var v1Len = arrTextList_v1.length;
 		var v2Len = arrTextList_v2.length;
+		//alert("初始删除数组："+v_posLists[0]);
 		var sub_list = getSubListBaseV1(v_posLists[0]);
+		//alert("合并后的数组："+sub_list);
 		var add_list = getAddListBaseV1(v_posLists[1],arrTextList_v2);
 
 		return addNewModify(sub_list,add_list,resultDom,jsonNewV.Version,v1Len,v2Len);
@@ -299,6 +303,8 @@
 				   if(num <= end){
 					   nodeChildren = resultDom.getElementsByTagName("SPAN");
 				       nodeChildren[realIndex].className = version+"_sub";
+					   nodeChildren[realIndex].setAttribute("version", version);
+				       nodeChildren[realIndex].setAttribute("method", "sub");
 					   realIndex++;
 					   num++;
 					   continue;
@@ -347,7 +353,7 @@
 		  textArry = getCharList(nodeText);
 		  var nodeStr = "";
 		  for(var j=0;j<textArry.length;j++){
-			  node = createElement(textArry[j],version+"_add");
+			  node = createElement(textArry[j],version,"add");
 			  //如果没有上一节点，就在之前插入
 			  if(begin==0){
 				  var parent = nodeChildren[0].parentNode; 
@@ -381,9 +387,89 @@
 	}
 
    //创建span标签
-   function createElement(innerHTML,className){
+   function createElement(innerHTML,version,method){
 		var node = document.createElement('SPAN');
-		node.className = className;
+		node.setAttribute("version", version);
+	    node.setAttribute("method", method);
+		className=version+"_"+method;
+		node.className =className;
 	    node.innerHTML = innerHTML;
 		return node;
    }
+   function createNewElement(innerText,version,method) {
+	   var node = document.createElement('SPAN');
+	   node.setAttribute("version", version);
+	   node.setAttribute("method", method);
+	   //设置class用作demo展示修改痕迹，这个可以根据自己的业务需求来做修改
+	   node.setAttribute("class","v"+version+"_"+method);
+	   node.innerText = innerText;
+	   return node;
+   } 
+
+	//合并标签
+   function merge(resultDom) {
+	var nodeChildren = resultDom.getElementsByTagName("SPAN");
+	var resultDom = document.createElement('div');
+	var text1="";
+	for (var i = 0; i < nodeChildren.length; i++) {
+		var n = i + 1;
+		if (n< nodeChildren.length) {// 数组下标不越界
+			// 比较前后两个标签class是否相同，如果相同合并为一个标签
+			if (nodeChildren[i].className == nodeChildren[n].className) {
+				text1 += nodeChildren[i].innerText;
+				method1 = nodeChildren[i].getAttribute("method");
+				version1 = nodeChildren[i].getAttribute("version");
+				if (i < nodeChildren.length - 1) {
+					continue;
+				}
+			} else {
+				text = nodeChildren[i].innerText;
+				method = nodeChildren[i].getAttribute("method");
+				version = nodeChildren[i].getAttribute("version");
+			}
+			if (text1 != "") {
+				if(i <= nodeChildren.length-2) {
+				text1 += nodeChildren[i].innerText;
+				}else{
+					text1+=nodeChildren[n].innerText;
+				}
+				resultDom.appendChild(createNewElement(text1,version1,method1));
+				text1 = "";
+			} else {
+				resultDom.appendChild(createNewElement(text,version,method));
+			}
+		}else{//最后位处理
+			var k=i-1;
+			if (nodeChildren[i].className == nodeChildren[k].className) {
+				text1 += nodeChildren[i].innerText;
+				resultDom.appendChild(createNewElement(text1,version1,method1));
+			}else{
+				text = nodeChildren[i].innerText;
+				method = nodeChildren[i].getAttribute("method");
+				version = nodeChildren[i].getAttribute("version");
+				resultDom.appendChild(createNewElement(text,version,method));
+			}
+		}
+	}
+	return resultDom.innerHTML;
+}
+   //执行比较
+   function Compare(json,resultDom) {
+	//复位（初始化），清除dom元素中的子内容
+	while (resultDom.hasChildNodes()) {
+		resultDom.removeChild(resultDom.firstChild);
+	}
+	var dom = merge(showCompareResult(json,resultDom));
+	console.log(dom);
+	return dom;
+  }
+
+   function parseDom(arg) {
+
+　　 var objE = document.createElement("div");
+
+　　 objE.innerHTML = arg;
+
+　　 return objE.childNodes;
+
+};

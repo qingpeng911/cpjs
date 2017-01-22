@@ -7,16 +7,24 @@
 <script>
 	function doCompare() {
 		// 1.页面展示元素定义
-		var jsonValue = document.getElementById("json").value;
-		var json = eval(jsonValue);
-		var resultDom = document.getElementById("result");
+		var _jsonStr = document.getElementById("json").value;
+		var _jsonData = eval(_jsonStr);
+		var _resultDom = document.getElementById("result");
 
-		// 2.复位（初始化），清除dom元素中的子内容
-		while (resultDom.hasChildNodes()) {
-			resultDom.removeChild(resultDom.firstChild);
+		// 2.对比
+		var _html = Compare(_jsonData,_resultDom);
+
+		_resultDom.innerHTML = _html;
+
+		var _isRender = document.getElementById("isRender").checked;
+		var _spanNode = _resultDom.getElementsByTagName("SPAN");
+		if (_isRender) {
+			for (var i = 0; i < _spanNode.length; i++) {
+				var _version = _spanNode[i].getAttribute("version");
+				var _method = _spanNode[i].getAttribute("method");
+			}
 		}
-		// 3.执行
-		showCompareResult(json,resultDom);
+
 	}
 </script>
 
@@ -70,19 +78,19 @@
 			[{
 				CrUser : "xiaoming",
 				CrTime : "2015-11-21 00:00:00",
-				DocContent : "小说《雾霾》有个人到郑州，问我：你们北京人凭什么那么牛？我默默的深吸了一口气 ，笑着看了看他。他不服，硬要学我，也深吸了一口气。卒… 享年22岁。"
+				DocContent : "小说《雾霾》有个人到郑州，问我：你们北京人凭什么那么牛？我默默的深吸了一口气 ，笑着看了看他。他不服，硬要学我，也深吸了一口气。卒… 享年22岁。",
 			},{
 				CrUser : "xiaohua",
 				CrTime : "2015-11-22 00:00:00",
-				DocContent : "短篇小说《霾》有个人到郑州，问我：你们成都人凭什么那么牛？我默默的深吸了一口气 ，笑着看了看他。他不服，硬要学我，也深吸了一口气。卒… 享年22岁。"
+				DocContent : "短篇小说《霾》有个人到郑州，问我：你们成都人凭什么那么牛？我默默的深吸了一口气 ，笑着看了看他。他不服，硬要学我，也深吸了一口气。卒… 享年22岁。",
 			},{
 				CrUser : "admin",
 				CrTime : "2015-11-23 00:00:00",
-				DocContent : "短篇小说《霾》有个人到成都，问我：你们成都人凭什么那么牛？我默默的深吸了一口气 ，笑着看了看他。他不服，硬要学我，也深吸了一口气。卒… 享年22岁。"
+				DocContent : "短篇小说《霾》有个人到成都，问我：你们成都人凭什么那么牛？我默默的深吸了一口气 ，笑着看了看他。他不服，硬要学我，也深吸了一口气。卒… 享年22岁。",
 			}];
 		</textarea>
 	</div>
-	<button onclick="doCompare();">对比</button>
+	<button onclick="doCompare();">对比</button>&nbsp;&nbsp;显示渲染结果：<input type="checkbox" id="isRender" checked="checked">
 	<br><br>
 	历史修改痕迹：
 	<div id="result" style="border:1px solid grey;width:80%;height:200px;">
@@ -104,6 +112,9 @@
 	</p>
 	<p>
 		<span class="v3_sub">恭喜发财</span>：表示V3版本在V2版本上删除的内容
+	</p>
+	<p>
+		<span class="v4_sub">恭喜发财</span>：表示V4版本在V3版本上删除的内容
 	</p>
 </body>
 </html>
